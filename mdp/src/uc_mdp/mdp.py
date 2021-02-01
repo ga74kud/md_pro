@@ -20,12 +20,10 @@ class mdp(object):
     def __init__(self, **kwargs):
         self.mdp_dict= {'S': None, # States
                    'action': None, # Action set
-                   'adjacency_list': None, # Topology
                    'R': None, # Rewards
                    'gamma': None, # discount factor
-                   'P': None # Positions
                     }
-        self.mdp_dict['T']=None # Transition
+        self.mdp_dict['P']=None # Transition
         self.mdp_dict['pi']=None
         self.mdp_dict['multi_pi'] = {}
         self.mdp_dict['U'] = None
@@ -51,8 +49,8 @@ class mdp(object):
     """
     Set transition probabilities on dictionary for MDP
     """
-    def set_T(self, transition):
-        self.mdp_dict['T']=transition
+    def set_P(self, transition):
+        self.mdp_dict['P']=transition
 
     """
     Set state values on dictionary for MDP
@@ -110,7 +108,7 @@ class mdp(object):
     def policy_evaluation(self):
             for kp, p in enumerate(self.mdp_dict['S']):
                 state_action=(p, self.mdp_dict['pi'][p])
-                prob_dict=self.mdp_dict['T'][state_action]
+                prob_dict=self.mdp_dict['P'][state_action]
                 bds=self.mdp_dict['gamma']*np.sum([a * b for a, b in zip(self.mdp_dict['U'], prob_dict)])
                 idx=np.int(np.random.choice(len(self.mdp_dict['S']), 1, p=prob_dict))
                 self.mdp_dict['U'][kp]=self.mdp_dict['R'][idx]+bds
@@ -125,7 +123,7 @@ class mdp(object):
                 all_Us = np.zeros(len(self.mdp_dict['action'][p]))
                 for ka, act_a in enumerate(self.mdp_dict['action'][p]):
                     state_action=(p, act_a)
-                    prob_dict=self.mdp_dict['T'][state_action]
+                    prob_dict=self.mdp_dict['P'][state_action]
                     bds=self.mdp_dict['gamma']*np.sum([a * b for a, b in zip(actual_U, prob_dict)])
                     idx = np.int(np.random.choice(len(self.mdp_dict['S']), 1, p=prob_dict))
                     all_Us[ka]=self.mdp_dict['R'][idx] + bds

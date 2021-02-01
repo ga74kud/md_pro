@@ -13,13 +13,16 @@ if __name__ == '__main__':
     ####################################################
     ### Challenge with Markov Decision Process (MDP) ###
     ####################################################
+
+    # states
     S = ['0', '1', '2', '3']
-    Ad = [('0', '0'), ('0', '1'), ('1', '0'), ('1', '1'), ('1', '2'), ('2', '1'), ('2', '2'), ('2', '3'), ('3', '2'),
-          ('3', '3'), ('3', '0'), ('0', '3')]
-    P = [(-3, -3, 2), (3, -3, 2), (3, 3, 2), (0, 0, 2)]
+    # Topology
+    T = np.array([[True, True, True, True], [True, True, True, True], [True, True, True, True], [True, True, True, True]])
+    # actions
     A = {'0': ['0', '1'], '1': ['1', '2'], '2': ['2', '3'], '3': ['3', '0']}
+    # rewards
     R = {'2': 100}
-    mdp_challenge = {'S': S, 'P': P, 'A': A, 'R': R, 'Ad': Ad}
+    mdp_challenge = {'S': S, 'A': A, 'R': R, 'T': T}
     ##################
     ### Parameters ###
     ##################
@@ -32,4 +35,4 @@ if __name__ == '__main__':
     params = vars(args)
     test_mdp(params, mdp_challenge)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
