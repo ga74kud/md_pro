@@ -29,5 +29,6 @@ setup(name='reachab',
           "matplotlib",
           "argparse",
           "logging",
+          "igraph",
         ],
       zip_safe=False)
