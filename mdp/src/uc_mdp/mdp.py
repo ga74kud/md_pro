@@ -19,13 +19,14 @@ Class for Markov Decision Process
 class mdp(object):
     def __init__(self, **kwargs):
         self.mdp_dict= {'S': None, # States
+                        'T': None,  # Topology
                    'action': None, # Action set
                    'R': None, # Rewards
                    'gamma': None, # discount factor
                     }
         self.mdp_dict['P']=None # Transition
         self.mdp_dict['pi']=None
-        self.mdp_dict['multi_pi'] = {}
+        #self.mdp_dict['multi_pi'] = {}
         self.mdp_dict['U'] = None
         self.param = {'n_optimal_trajectory': None, # optimal trajectory
                       }
@@ -78,6 +79,13 @@ class mdp(object):
     """
     def set_S(self, S):
         self.mdp_dict['S']=S
+
+    """
+    Set topology for MDP
+    """
+
+    def set_T(self, T):
+        self.mdp_dict['T'] = T
 
     """
     Set rewards on dictionary for MDP

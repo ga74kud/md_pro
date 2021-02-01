@@ -24,16 +24,24 @@ class problem(object):
                 else:
                     None
         return transition
+    def get_actions(self, S, T):
+        new_dict=dict()
+        for idx, ili in enumerate(S):
+            act_bool=T[idx, :]
+            new_val=[i for idx, i in enumerate(S) if(act_bool[idx])]
+            new_dict[ili]=new_val
+        return new_dict
 
 
     def set_solver(self, params):
         S = self.mdp_challenge['S'] # states
-        A = self.mdp_challenge['A'] # actions
         T = self.mdp_challenge['T']  # topology
+        A = self.get_actions(S, T)  # actions
         P = self.get_probability_nodes(S, T, A)
         self.obj_solver=mdp()
         self.obj_solver.set_gamma(params['gamma'])
         self.obj_solver.set_S(S)
+        self.obj_solver.set_T(T)
         self.obj_solver.set_U()
         self.obj_solver.set_action(A)
         self.obj_solver.set_init_pi()
@@ -42,6 +50,6 @@ class problem(object):
         R_dict = rewards
         self.obj_solver.set_R(R_dict)
         dict_mdp = self.obj_solver.start_mdp_algorithm()
-        self.obj_solver.get_all_policy_options()
+        # self.obj_solver.get_all_policy_options()
         return dict_mdp
 

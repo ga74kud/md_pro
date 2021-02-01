@@ -17,12 +17,13 @@ if __name__ == '__main__':
     # states
     S = ['0', '1', '2', '3']
     # Topology
-    T = np.array([[True, True, True, True], [True, True, True, True], [True, True, True, True], [True, True, True, True]])
-    # actions
-    A = {'0': ['0', '1'], '1': ['1', '2'], '2': ['2', '3'], '3': ['3', '0']}
+    T = np.array([[True, True, False, True],
+                  [True, True, True, False],
+                  [False, True, True, True],
+                  [True, False, True, True]])
     # rewards
     R = {'2': 100}
-    mdp_challenge = {'S': S, 'A': A, 'R': R, 'T': T}
+    mdp_challenge = {'S': S, 'R': R, 'T': T}
     ##################
     ### Parameters ###
     ##################
