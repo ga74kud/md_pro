@@ -14,7 +14,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='md_pro',
-      version='0.0.2',
+      version='0.0.3',
       description='Markov Decision Process',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -28,8 +28,7 @@ setup(name='md_pro',
           "numpy",
           "matplotlib",
           "argparse",
-          "logging",
-          "igraph",
+          "python-igraph",
           "pycairo",
           "plotly",
           "pandas",

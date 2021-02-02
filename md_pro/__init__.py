@@ -118,3 +118,44 @@ def plot_the_result(dict_mdp, mdp_challenge):
                                          color=dict_mdp['U'])
                                          ))
     fig.show()
+
+"""
+Reach n-steps
+"""
+def next_neighbour():
+    None
+
+"""
+Reachability analysis for topological spaces and n-steps
+"""
+def reach_n_steps(strt_pnt, mdp_challenge, dict_mdp, params, steps=3):
+    reach=[]
+    # first neighbours
+    neigh=dict_mdp['action'][strt_pnt]
+    # reachability variable
+    reach.append(neigh)
+    for i in range(0, steps):
+        neigh = []
+        # actual neighbours
+        last_reach=reach[i]
+        for qrt in last_reach:
+            new_neigh=dict_mdp['action'][qrt]
+            for wlt in new_neigh:
+                neigh.append(wlt)
+        neigh=np.unique(neigh)
+        reach.append(neigh)
+    return reach
+"""
+Get the trajectory for reachability analysis
+"""
+def get_trajectory(strt_pnt, dict_mdp, reach_set):
+    traj=[]
+    traj.append(strt_pnt)
+    U=dict_mdp['U']
+    for act_reach in reach_set:
+        act_U=np.array([U[int(wlt)] for wlt in act_reach])
+        idx=np.argmax(act_U)
+        candidate=act_reach[idx]
+        if(candidate in dict_mdp['action'][traj[-1]]):
+            traj.append(candidate)
+    return traj
