@@ -13,9 +13,9 @@ from setuptools import setup
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setup(name='reachab',
-      version='0.4.4',
-      description='Reachability Analysis with zonotypes',
+setup(name='mdp',
+      version='0.0.1',
+      description='Markov Decision Process',
       long_description=long_description,
       long_description_content_type="text/markdown",
       url='https://github.com/ga74kud/reachab',
