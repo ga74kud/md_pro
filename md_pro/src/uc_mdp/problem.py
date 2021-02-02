@@ -8,7 +8,7 @@
 # -------------------------------------------------------------
 
 
-from mdp.src.uc_mdp.mdp import *
+from md_pro.src.uc_mdp.mdp import *
 
 class problem(object):
     def __init__(self, mdp_challenge, **kwargs):

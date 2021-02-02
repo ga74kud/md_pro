@@ -111,7 +111,7 @@ def optimal_path_for_queue(map, mdp_dict):
     queue_list = []
     start_point_list=[]
     act_node_list=[]
-    for idx in range(0, params["mdp"]["simulation"]["number_cycles_to_reach_target"]):
+    for idx in range(0, params["md_pro"]["simulation"]["number_cycles_to_reach_target"]):
         start_point, all_end_points, best_end_point, next_node=get_next_node(act_node, map, mdp_dict)
         start_point_list.append(start_point.tolist())
         act_node_list.append(int(act_node))
@@ -190,7 +190,7 @@ def interpolate_traj(act_traj):
 
     # Interpolation for different methods:
     interpolations_methods = ['quadratic']
-    alpha = np.linspace(0, 1, param["mdp"]["simulation"]["spline_interpolation"])
+    alpha = np.linspace(0, 1, param["md_pro"]["simulation"]["spline_interpolation"])
 
     interpolated_points = {}
     for method in interpolations_methods:

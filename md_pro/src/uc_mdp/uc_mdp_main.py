@@ -7,8 +7,8 @@
 # email michael.hartmann@v2c2.at
 # -------------------------------------------------------------
 
-from mdp.src.uc_mdp.problem import *
-import mdp.util.data_input_loader as util_io
+from md_pro.src.uc_mdp.problem import *
+import md_pro.util.data_input_loader as util_io
 class service_MDP(object):
     def __init__(self):
         self.obj=None

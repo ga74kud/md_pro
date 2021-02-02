@@ -9,7 +9,7 @@
 
 import logging
 import argparse
-from mdp.src.uc_mdp.uc_mdp_main import *
+from md_pro.src.uc_mdp.uc_mdp_main import *
 from __init__ import *
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # Topology
     T, S = get_simple_topology_for_regular_grid(params, P)
     # rewards
-    R = {'38': 100}
+    R = {'35': 100}
     mdp_challenge = {'S': S, 'R': R, 'T': T, 'P': P}
 
     dict_mdp=start_mdp(params, mdp_challenge)

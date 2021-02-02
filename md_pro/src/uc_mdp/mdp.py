@@ -11,7 +11,7 @@ import logging
 import igraph as ig
 import numpy as np
 from scipy.cluster.vq import kmeans, vq
-import mdp.util.data_input_loader as util_io
+import md_pro.util.data_input_loader as util_io
 
 """
 Class for Markov Decision Process
@@ -258,7 +258,7 @@ class mdp(object):
     """
     def get_trajectory(self, R_dict):
         params=util_io.get_params()
-        start_node=self.mdp_dict['S'][params["mdp"]["simulation"]["start_node"]]
+        start_node=self.mdp_dict['S'][params["md_pro"]["simulation"]["start_node"]]
         r_target_values=list(R_dict.keys())
         ideal_path=[]
         ideal_path.append(str(start_node))

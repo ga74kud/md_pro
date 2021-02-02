@@ -7,7 +7,7 @@
 # email michael.hartmann@v2c2.at
 # -------------------------------------------------------------
 
-from mdp.src.uc_mdp.uc_mdp_main import *
+from md_pro.src.uc_mdp.uc_mdp_main import *
 from scipy.spatial.distance import pdist, squareform
 import argparse
 import igraph as ig

@@ -13,7 +13,7 @@ from setuptools import setup
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setup(name='md-pro',
+setup(name='md_pro',
       version='0.0.2',
       description='Markov Decision Process',
       long_description=long_description,
