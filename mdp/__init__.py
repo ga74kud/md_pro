@@ -1,7 +1,17 @@
+# -------------------------------------------------------------
+# code developed by Michael Hartmann during his Ph.D.
+# Markov Decision Process (MDP)
+#
+# (C) 2021 Michael Hartmann, Graz, Austria
+# Released under GNU GENERAL PUBLIC LICENSE
+# email michael.hartmann@v2c2.at
+# -------------------------------------------------------------
+
 from mdp.src.uc_mdp.uc_mdp_main import *
 from scipy.spatial.distance import pdist, squareform
 import argparse
-
+import igraph as ig
+import plotly.graph_objects as go
 '''
 Start a MDP challenge
 '''
@@ -66,3 +76,45 @@ def get_simple_topology_for_regular_grid(params, P):
     # T = np.zeros((amount_nodes, amount_nodes), dtype=bool)
     # T=np.eye(amount_nodes, dtype=bool)
     return T, S
+
+'''
+Topology to edge list
+'''
+def topology_to_edge_list(T):
+    edge_list=[]
+    T=T.tolist()
+    for itp in range(0, len(T)):
+        act_list=T[itp]
+        new_ind=[idx for idx, x in enumerate(act_list) if x]
+        for qrt in new_ind:
+            edge_list.append((itp, qrt))
+    return edge_list
+'''
+Plot the results
+'''
+def plot_the_result(dict_mdp, mdp_challenge):
+    edge_list=topology_to_edge_list(mdp_challenge['T'])
+    g = ig.Graph(edge_list)
+    g.vs["name"] = dict_mdp['S']
+    g.vs["reward"] = dict_mdp['R']
+    g.vs["label"] = g.vs["name"]
+    P_2D=list(mdp_challenge['P'].values())
+    x_vec = [wlt[0] for wlt in P_2D]
+    y_vec = [wlt[1] for wlt in P_2D]
+    layout = ig.Layout(P_2D)
+    g.vs["vertex_size"] = 20
+    visual_style = {}
+    visual_style["edge_curved"] = False
+    colors = [(1, 0, 1) for i in range(0, len(dict_mdp['S']))]
+    g.vs["color"] = colors
+    fig = go.Figure()
+    fig.add_trace(go.Scattergl(x=x_vec, y=y_vec, text=dict_mdp['S'],
+                             mode='markers',
+                             name='grid_points'))
+    fig.add_trace(go.Scattergl(x=x_vec, y=y_vec,
+                    mode='markers',
+                    name='value_markers',
+                    marker=dict(size=dict_mdp['U'],
+                                         color=dict_mdp['U'])
+                                         ))
+    fig.show()

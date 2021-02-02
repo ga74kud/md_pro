@@ -30,5 +30,8 @@ setup(name='reachab',
           "argparse",
           "logging",
           "igraph",
+          "pycairo",
+          "plotly",
+          "pandas",
         ],
       zip_safe=False)

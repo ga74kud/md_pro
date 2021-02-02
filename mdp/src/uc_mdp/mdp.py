@@ -2,8 +2,8 @@
 # code developed by Michael Hartmann during his Ph.D.
 # Markov Decision Process (MDP)
 #
-# (C) 2020 Michael Hartmann, Graz, Austria
-# Released under TODO: find a release license
+# (C) 2021 Michael Hartmann, Graz, Austria
+# Released under GNU GENERAL PUBLIC LICENSE
 # email michael.hartmann@v2c2.at
 # -------------------------------------------------------------
 

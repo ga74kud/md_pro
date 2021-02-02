@@ -2,7 +2,7 @@
 # code developed by Michael Hartmann during his Ph.D.
 # Markov Decision Process (MDP)
 #
-# (C) 2020 Michael Hartmann, Graz, Austria
+# (C) 2021 Michael Hartmann, Graz, Austria
 # Released under GNU GENERAL PUBLIC LICENSE
 # email michael.hartmann@v2c2.at
 # -------------------------------------------------------------
@@ -36,10 +36,10 @@ if __name__ == '__main__':
     T, S = get_simple_topology_for_regular_grid(params, P)
     # rewards
     R = {'38': 100}
-    mdp_challenge = {'S': S, 'R': R, 'T': T}
+    mdp_challenge = {'S': S, 'R': R, 'T': T, 'P': P}
 
     dict_mdp=start_mdp(params, mdp_challenge)
-
+    plot_the_result(dict_mdp, mdp_challenge)
 
     None
 
