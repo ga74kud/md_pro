@@ -8,7 +8,7 @@ Markov Decision Process
 
 # Installation
 ```bash
-pip install TODO
+pip install md-pro
 ```
 
 # Usage
