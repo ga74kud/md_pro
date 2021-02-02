@@ -39,11 +39,16 @@ def compute_distance_matrix(P):
 '''
 Convert distance matrix to k_nearest_neigh-topology-matrix
 '''
-def convert_distance_knear_neigh_mat(C):
-
-    return C
+def convert_distance_knear_neigh_mat(C, k=5):
+    T = np.zeros((np.size(C,0), np.size(C,1)), dtype=bool)
+    idx_mat=np.argsort(C, axis=0)
+    for i in range(0, np.size(C, 1)):
+        act_idx=idx_mat[0:4, i]
+        T[act_idx, i]=True
+    return T
 
 """
+get topology T and states for a regular grid
 #states
 S = ['0', '1', '2', '3']
 #topology
@@ -58,6 +63,6 @@ def get_simple_topology_for_regular_grid(params, P):
     T=convert_distance_knear_neigh_mat(C)
     amount_nodes=params["y_grid"]*params["x_grid"]
     S=[str(i) for i in range(0, amount_nodes)]
-    T = np.zeros((amount_nodes, amount_nodes), dtype=bool)
-    T=np.eye(amount_nodes, dtype=bool)
+    # T = np.zeros((amount_nodes, amount_nodes), dtype=bool)
+    # T=np.eye(amount_nodes, dtype=bool)
     return T, S
