@@ -96,9 +96,9 @@ def vectorfield_for_queue(map, mdp_dict):
             continue
     return queue_list
 
-def optimal_path_for_queue(map, mdp_dict, storyline):
+def optimal_path_for_queue(map, mdp_dict):
     params = get_params()
-    act_node = storyline["start_node"]
+    act_node = '0'
     queue_list = []
     start_point_list=[]
     act_node_list=[]

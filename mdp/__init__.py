@@ -1,4 +1,5 @@
 from mdp.src.uc_mdp.uc_mdp_main import *
+from scipy.spatial.distance import pdist, squareform
 import argparse
 
 '''
@@ -20,25 +21,43 @@ def get_meshgrid_points(params):
     x=np.ravel(X)
     y=np.ravel(Y)
     z=0*y
-    dict_pnts={}
+    P={}
     points=np.transpose(np.vstack((x, y, z))).tolist()
     for idx, act_point in enumerate(points):
-        dict_pnts[str(idx)]=act_point
-    return dict_pnts
+        P[str(idx)]=act_point
+    return P
+
+
+'''
+Compute distance matrix
+'''
+def compute_distance_matrix(P):
+    rtb=np.vstack(list(P.values()))
+    C=squareform(pdist(rtb))
+    return C
+
+'''
+Convert distance matrix to k_nearest_neigh-topology-matrix
+'''
+def convert_distance_knear_neigh_mat(C):
+
+    return C
 
 """
-
-
 #states
 S = ['0', '1', '2', '3']
 #topology
 T=np.array([[True, True, False, True],
                   [True, True, True, False],
                   [False, True, True, True],
-                  [True, False, True, True]])"""
+                  [True, False, True, True]])
+"""
 
-def get_simple_topology_for_regular_grid(params):
+def get_simple_topology_for_regular_grid(params, P):
+    C=compute_distance_matrix(P)
+    T=convert_distance_knear_neigh_mat(C)
     amount_nodes=params["y_grid"]*params["x_grid"]
     S=[str(i) for i in range(0, amount_nodes)]
-    T=np.ones((amount_nodes, amount_nodes), dtype=bool)
+    T = np.zeros((amount_nodes, amount_nodes), dtype=bool)
+    T=np.eye(amount_nodes, dtype=bool)
     return T, S

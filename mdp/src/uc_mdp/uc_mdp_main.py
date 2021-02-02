@@ -7,7 +7,6 @@ class service_MDP(object):
         self.obj = problem(mdp_challenge)
         self.obj.set_solver(params)
         dict_mdp=self.obj.start_mdp_solver(mdp_challenge['R'])
-
         return dict_mdp
 
 if __name__ == '__main__':

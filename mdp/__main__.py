@@ -30,15 +30,17 @@ if __name__ == '__main__':
     ####################################################
     ### Challenge with Markov Decision Process (MDP) ###
     ####################################################
-    # states
-    S = ['0', '1', '2', '3']
+    # points
+    P=get_meshgrid_points(params)
     # Topology
-    T, S = get_simple_topology_for_regular_grid(params)
+    T, S = get_simple_topology_for_regular_grid(params, P)
     # rewards
-    R = {'2': 100}
+    R = {'38': 100}
     mdp_challenge = {'S': S, 'R': R, 'T': T}
 
     dict_mdp=start_mdp(params, mdp_challenge)
+
+
     None
 
 
