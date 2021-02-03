@@ -12,6 +12,7 @@ from scipy.spatial.distance import pdist, squareform
 import argparse
 import igraph as ig
 import plotly.graph_objects as go
+import warnings
 '''
 Start a MDP challenge
 '''
@@ -163,11 +164,11 @@ def get_trajectory_old(strt_pnt, dict_mdp, reach_set):
 """
 Get the trajectory for reachability analysis
 """
-def get_trajectory(strt_pnt, dict_mdp, reach_set):
+def get_trajectory(strt_pnt, dict_mdp, steps=10):
     traj=[]
     traj.append(strt_pnt)
     U=dict_mdp['U']
-    for act_reach in reach_set:
+    for qrt in range(0, steps):
         act_actions=np.array([np.int(wlt) for wlt in dict_mdp['action'][traj[-1]]])
         act_U=np.array([U[wlt] for wlt in act_actions])
         idx=np.argmax(act_U)
@@ -190,3 +191,24 @@ def get_U_for_agent_neighbours(dict_mdp, agent_str):
     act_neigh=dict_mdp['action'][agent_str]
     agent_U_neigh={wlt: U_dict[wlt] for wlt in act_neigh}
     return agent_U_neigh
+
+"""
+Stochastic trajectory generation
+"""
+def get_stochastic_trajectory(strt_pnt, dict_mdp, steps=10):
+    traj=[]
+    traj.append(strt_pnt)
+    U=dict_mdp['U']
+    for qrt in range(0, steps):
+        act_actions=np.array([np.int(wlt) for wlt in dict_mdp['action'][traj[-1]]])
+        act_U=np.array([U[wlt] for wlt in act_actions])
+        dummy=act_U
+        prob_vec=dummy/np.sum(dummy)
+        if(np.abs(np.sum(prob_vec)-1)<10e-4):
+            logging.info("passed, prob nearly 1: "+str(np.sum(prob_vec)))
+        else:
+            warnings.warn("not a normalized")
+        idx=np.random.choice(len(prob_vec), 1, p=prob_vec)
+        candidate=np.str(act_actions[idx])
+        traj.append(candidate)
+    return traj
