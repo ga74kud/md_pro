@@ -44,7 +44,9 @@ if __name__ == '__main__':
 
     dict_mdp=start_mdp(params, mdp_challenge)
     reach_set=reach_n_steps(strt_pnt, mdp_challenge, dict_mdp, params, steps=8)
+    optimal_traj=get_trajectory_old(strt_pnt, dict_mdp, reach_set)
     optimal_traj=get_trajectory(strt_pnt, dict_mdp, reach_set)
+    print(get_U_for_agent_neighbours(dict_mdp, '0'))
     plot_the_result(dict_mdp, mdp_challenge)
 
     None

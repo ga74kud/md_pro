@@ -148,7 +148,7 @@ def reach_n_steps(strt_pnt, mdp_challenge, dict_mdp, params, steps=3):
 """
 Get the trajectory for reachability analysis
 """
-def get_trajectory(strt_pnt, dict_mdp, reach_set):
+def get_trajectory_old(strt_pnt, dict_mdp, reach_set):
     traj=[]
     traj.append(strt_pnt)
     U=dict_mdp['U']
@@ -159,3 +159,34 @@ def get_trajectory(strt_pnt, dict_mdp, reach_set):
         if(candidate in dict_mdp['action'][traj[-1]]):
             traj.append(candidate)
     return traj
+
+"""
+Get the trajectory for reachability analysis
+"""
+def get_trajectory(strt_pnt, dict_mdp, reach_set):
+    traj=[]
+    traj.append(strt_pnt)
+    U=dict_mdp['U']
+    for act_reach in reach_set:
+        act_actions=np.array([np.int(wlt) for wlt in dict_mdp['action'][traj[-1]]])
+        act_U=np.array([U[wlt] for wlt in act_actions])
+        idx=np.argmax(act_U)
+        candidate=np.str(act_actions[idx])
+        traj.append(candidate)
+    return traj
+
+"""
+Get the value function as a dictionary
+"""
+def get_U_as_dict(dict_mdp):
+    U_list=dict_mdp['U']
+    U_dict={str(idx): wlt for idx, wlt in enumerate(U_list)}
+    return U_dict
+"""
+Get the values for the neighbours of one agent
+"""
+def get_U_for_agent_neighbours(dict_mdp, agent_str):
+    U_dict=get_U_as_dict(dict_mdp)
+    act_neigh=dict_mdp['action'][agent_str]
+    agent_U_neigh={wlt: U_dict[wlt] for wlt in act_neigh}
+    return agent_U_neigh
