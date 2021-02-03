@@ -200,15 +200,13 @@ def get_stochastic_trajectory(strt_pnt, dict_mdp, steps=10):
     traj.append(strt_pnt)
     U=dict_mdp['U']
     for qrt in range(0, steps):
-        act_actions=np.array([np.int(wlt) for wlt in dict_mdp['action'][traj[-1]]])
+        drt=dict_mdp['action'][traj[-1]]
+        act_actions=np.array([np.int(wlt) for wlt in drt])
         act_U=np.array([U[wlt] for wlt in act_actions])
         dummy=act_U
         prob_vec=dummy/np.sum(dummy)
-        if(np.abs(np.sum(prob_vec)-1)<10e-4):
-            logging.info("passed, prob nearly 1: "+str(np.sum(prob_vec)))
-        else:
-            warnings.warn("not a normalized")
         idx=np.random.choice(len(prob_vec), 1, p=prob_vec)
+        idx=idx[0]
         candidate=np.str(act_actions[idx])
         traj.append(candidate)
     return traj
