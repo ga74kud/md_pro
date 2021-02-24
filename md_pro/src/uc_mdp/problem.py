@@ -43,13 +43,13 @@ class problem(object):
         return new_dict
 
 
-    def set_solver(self, params):
+    def set_solver(self, mdp_challenge):
         S = self.mdp_challenge['S'] # states
         T = self.mdp_challenge['T']  # topology
         A = self.get_actions(S, T)  # actions
         P = self.get_probability_nodes(S, T, A)
         self.obj_solver=mdp()
-        self.obj_solver.set_gamma(params['gamma'])
+        self.obj_solver.set_gamma(mdp_challenge['gamma'])
         self.obj_solver.set_S(S)
         self.obj_solver.set_T(T)
         self.obj_solver.set_U()

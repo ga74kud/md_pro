@@ -12,22 +12,24 @@ from scipy.spatial.distance import pdist, squareform
 import argparse
 import igraph as ig
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 import warnings
 '''
 Start a MDP challenge
 '''
-def start_mdp(params, mdp_challenge):
+def start_mdp(mdp_challenge):
     obj_mdp = service_MDP()
-    dict_mdp = obj_mdp.start_mdp(params, mdp_challenge)
+    dict_mdp = obj_mdp.start_mdp(mdp_challenge)
     logging.info(dict_mdp['pi'])
     return dict_mdp
 
 '''
 Get the points of a regular grid
 '''
-def get_meshgrid_points(params):
-    xgrid = np.linspace(-10, 10, params["x_grid"])
-    ygrid = np.linspace(-10, 10, params["y_grid"])
+def get_meshgrid_points(**kwargs):
+    xgrid = np.linspace(kwargs["x_min"], kwargs["x_max"], kwargs["x_grid"])
+    ygrid = np.linspace(kwargs["y_min"], kwargs["y_max"], kwargs["y_grid"])
     X, Y=np.meshgrid(xgrid,ygrid)
     x=np.ravel(X)
     y=np.ravel(Y)
@@ -69,10 +71,10 @@ T=np.array([[True, True, False, True],
                   [True, False, True, True]])
 """
 
-def get_simple_topology_for_regular_grid(params, P):
+def get_simple_topology_for_regular_grid(P, **kwargs):
     C=compute_distance_matrix(P)
     T=convert_distance_knear_neigh_mat(C)
-    amount_nodes=params["y_grid"]*params["x_grid"]
+    amount_nodes=kwargs["y_grid"]*kwargs["x_grid"]
     S=[str(i) for i in range(0, amount_nodes)]
     # T = np.zeros((amount_nodes, amount_nodes), dtype=bool)
     # T=np.eye(amount_nodes, dtype=bool)
@@ -164,7 +166,7 @@ def get_trajectory_old(strt_pnt, dict_mdp, reach_set):
 """
 Get the trajectory for reachability analysis
 """
-def get_trajectory(strt_pnt, dict_mdp, steps=10):
+def get_deterministic_trajectory(strt_pnt, dict_mdp, steps=10):
     traj=[]
     traj.append(strt_pnt)
     U=dict_mdp['U']
@@ -210,3 +212,85 @@ def get_stochastic_trajectory(strt_pnt, dict_mdp, steps=10):
         candidate=np.str(act_actions[idx])
         traj.append(candidate)
     return traj
+
+"""
+Get new states with a virtual force
+"""
+def get_new_states_with_virtual_force():
+    None
+
+def get_list_P(P):
+    return np.array([[P[i][0], P[i][1]] for i in P])
+
+def optimal_path_as_integers(optimal_mdp_str):
+    return [np.int(i) for i in optimal_mdp_str]
+'''
+Get the xy coordinates from the optimal path of the MDP. Interpolate the xy coordinates
+'''
+def get_result_trajectories_mdp(params, optimal_mdp_str, P):
+    coordinates=get_list_P(P)
+    optimal_mdp=optimal_path_as_integers(optimal_mdp_str)
+    act_traj=list()
+    for wlt in optimal_mdp:
+        x = coordinates[wlt, 0]
+        y = coordinates[wlt, 1]
+        act_traj.append((x,y))
+    interpolated_points, points=interpolate_traj(params, act_traj)
+    return interpolated_points, points
+
+
+'''
+    Filter obsolete path points
+'''
+def filter_obsolete_path_points(act_traj):
+    new_traj = [act_traj[0]]
+    for wlt in act_traj:
+        if (new_traj[-1] != wlt):
+            new_traj.append(wlt)
+    x = [wlt[0] for wlt in new_traj]
+    y = [wlt[1] for wlt in new_traj]
+    points = np.vstack((x, y)).T
+    return points
+'''
+    Cumulative and normalization of the points
+'''
+def cumulative_distance(act_traj):
+    points=filter_obsolete_path_points(act_traj)
+    # Linear length along the line:
+    cum_distance = np.cumsum(np.sqrt(np.sum(np.diff(points, axis=0) ** 2, axis=1)))
+    cum_distance=np.insert(cum_distance, 0, 0)
+    normalized_distance = cum_distance / cum_distance[-1]
+    return normalized_distance, points
+
+'''
+    Cumulative and normalization of the points
+'''
+def cumulative_distance_without_filtering(act_traj):
+    points=act_traj
+    dif_points=np.diff(points, axis=0)
+    sum_dif=np.sum(dif_points ** 2, axis=1)
+    cum_distance = np.cumsum(np.sqrt(sum_dif))
+    cum_distance=np.insert(cum_distance, 0, 0)
+    # x=act_traj[:, 0]
+    # y=act_traj[:, 1]
+    # # fig, ax = plt.subplots()
+    # ax.scatter(x, y)
+    #
+    # for idx, txt in enumerate(cum_distance):
+    #     ax.annotate(txt, (x[idx], y[idx]))
+    # plt.show()
+    return cum_distance
+
+'''
+    Interpolation of the trajectory in xy coordinates
+'''
+def interpolate_traj(params, act_traj):
+    normalized_distance, points=cumulative_distance(act_traj)
+    # Interpolation for different methods:
+    method = 'quadratic'
+    alpha = np.linspace(0, 1, params["spline_interpolation"])
+
+    interpolated_points = {}
+    interpolator = interp1d(normalized_distance, points, kind=method, axis=0)
+    interpolated_points[method] = interpolator(alpha)
+    return interpolated_points, points

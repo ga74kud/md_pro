@@ -12,9 +12,9 @@ import md_pro.util.data_input_loader as util_io
 class service_MDP(object):
     def __init__(self):
         self.obj=None
-    def start_mdp(self, params, mdp_challenge):
+    def start_mdp(self, mdp_challenge):
         self.obj = problem(mdp_challenge)
-        self.obj.set_solver(params)
+        self.obj.set_solver(mdp_challenge)
         dict_mdp=self.obj.start_mdp_solver(mdp_challenge['R'])
         return dict_mdp
 
